@@ -1,32 +1,164 @@
 <template>
-  <div class="web-container">
-    <web src="{{url}}" trustedurl="{{url}}"></web>
+  <div class="page-container">
+    <!-- 顶部大背景 -->
+    <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
+
+    <!-- 导航栏 -->
+    <div class="nav-bar">
+      <div class="back-btn" onclick="goBack">
+        <image class="back-icon" src="/assets/img/back.png"></image>
+      </div>
+      <text class="nav-title">{{ question }}</text>
+    </div>
+
+    <!-- 内容区域 -->
+    <scroll class="content-scroll">
+      <div class="content-wrapper">
+        <!-- 问题卡片 -->
+        <div class="question-card">
+          <image class="wen-icon" src="/assets/img/wen.png"></image>
+          <text class="question-text">{{ question }}</text>
+        </div>
+
+        <!-- 回答卡片 -->
+        <div class="answer-card">
+          <image class="answer-bg-img" src="/assets/img/_-1.png"></image>
+          <text class="answer-text">{{ answer }}</text>
+        </div>
+      </div>
+    </scroll>
   </div>
 </template>
 
 <script>
+import router from '@system.router'
+
 export default {
-  data() {
-    return {
-      url: '',
-      title: ''
-    }
+  protected: {
+    question: '',
+    answer: ''
   },
   onInit() {
-    this.url = this.url || ''
-    this.title = this.title || '详情'
+    // 页面初始化
+  },
+  goBack() {
+    router.back()
   }
 }
 </script>
 
 <style>
-.web-container {
-  width: 100%;
-  height: 100%;
+.page-container {
+  flex-direction: column;
+  background-color: #f5f7fa;
 }
 
-web {
+.top-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 550px;
+  object-fit: cover;
+}
+
+.nav-bar {
+  width: 100%;
+  height: 100px;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 60px;
+}
+
+.back-btn {
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.back-icon {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+}
+
+.nav-title {
+  flex: 1;
+  font-size: 40px;
+  color: #333333;
+  font-weight: bold;
+  margin-left: 20px;
+  lines: 1;
+  text-overflow: ellipsis;
+}
+
+.content-scroll {
+  flex: 1;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.content-wrapper {
+  flex-direction: column;
+  padding: 30px;
+  padding-bottom: 50px;
+}
+
+.question-card {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.wen-icon {
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.question-text {
+  flex: 1;
+  font-size: 32px;
+  color: #333333;
+  font-weight: bold;
+}
+
+.answer-card {
+  width: 100%;
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 40px;
+  padding-bottom: 80px;
+  flex-direction: column;
+  position: relative;
+  min-height: 800px;
+}
+
+.answer-bg-img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 800px;
+  object-fit: contain;
+  opacity: 1;
+}
+
+.answer-text {
+  font-size: 30px;
+  color: #333333;
+  line-height: 50px;
+  z-index: 1;
 }
 </style>

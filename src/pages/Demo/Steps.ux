@@ -3,14 +3,11 @@
     <!-- 顶部区域 -->
     <div class="top-section">
       <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
-      
+
       <!-- 顶部日期和标题 -->
       <div class="header-info">
-        <div class="app-info">
-          <image class="app-icon" src="/assets/img/logo.png"></image>
-          <text class="app-name">嘉悦计步</text>
-        </div>
-        <text class="date-text">{{currentDate}}</text>
+        <image class="app-logo" src="/assets/img/logo-1.png"></image>
+        <text class="date-text">{{ currentDate }}</text>
       </div>
 
       <!-- 卡通人物 -->
@@ -20,19 +17,19 @@
       <div class="today-stats-card">
         <div class="stat-item">
           <text class="stat-label">今日步数</text>
-          <text class="stat-value">0</text>
+          <text class="stat-value">{{ todaySteps }}</text>
           <text class="stat-unit">步</text>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
           <text class="stat-label">今日时长</text>
-          <text class="stat-value">0</text>
+          <text class="stat-value">{{ todayDuration }}</text>
           <text class="stat-unit">分钟</text>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
           <text class="stat-label">今日消耗</text>
-          <text class="stat-value">0</text>
+          <text class="stat-value">{{ todayCalories }}</text>
           <text class="stat-unit">千卡</text>
         </div>
       </div>
@@ -42,27 +39,42 @@
     <div class="target-card" onclick="openTargetModal">
       <text class="target-label">今日预计步数</text>
       <div class="target-setting">
-        <text class="target-value-text">{{targetSteps > 0 ? targetSteps : '未设置'}}</text>
+        <text class="target-value-text">{{
+          targetSteps > 0 ? targetSteps : '未设置'
+        }}</text>
         <image class="setting-icon" src="/assets/img/chilun.png"></image>
       </div>
     </div>
 
     <!-- 添加步数按钮 -->
-    <div class="add-btn" onclick="openRecordModal">
+    <div class="add-btn" onclick="openRecordModal" if="{{todaySteps === 0}}">
       <text class="add-btn-text">添加步数</text>
+    </div>
+
+    <!-- 有数据时显示两个按钮 -->
+    <div class="dual-btn-container" if="{{todaySteps > 0}}">
+      <div class="delete-btn" onclick="deleteTodayData">
+        <text class="delete-btn-text">删除今日数据</text>
+      </div>
+      <div class="continue-btn" onclick="openRecordModal">
+        <text class="continue-btn-text">继续添加</text>
+      </div>
     </div>
 
     <!-- 累计数据 -->
     <text class="section-title">累计数据</text>
-    
+
     <div class="cumulative-list">
       <!-- 累计步数 -->
       <div class="data-card">
         <div class="icon-wrapper">
-          <image class="data-icon" src="/assets/img/leijiyundongbushu.png"></image>
+          <image
+            class="data-icon"
+            src="/assets/img/leijiyundongbushu.png"
+          ></image>
         </div>
         <div class="data-info">
-          <text class="data-num">{{totalSteps}}</text>
+          <text class="data-num">{{ totalSteps }}</text>
           <text class="data-desc">累计运动步数 (步)</text>
         </div>
       </div>
@@ -73,7 +85,7 @@
           <image class="data-icon" src="/assets/img/shijian.png"></image>
         </div>
         <div class="data-info">
-          <text class="data-num">{{totalDuration}}</text>
+          <text class="data-num">{{ totalDuration }}</text>
           <text class="data-desc">累计运动时长 (分钟)</text>
         </div>
       </div>
@@ -84,7 +96,7 @@
           <image class="data-icon" src="/assets/img/shijian-1.png"></image>
         </div>
         <div class="data-info">
-          <text class="data-num">{{totalCalories}}</text>
+          <text class="data-num">{{ totalCalories }}</text>
           <text class="data-desc">累计运动消耗 (kcal)</text>
         </div>
       </div>
@@ -95,7 +107,7 @@
           <image class="data-icon" src="/assets/img/shijian-2.png"></image>
         </div>
         <div class="data-info">
-          <text class="data-num">{{totalCount}}</text>
+          <text class="data-num">{{ totalCount }}</text>
           <text class="data-desc">累计运动次数 (次)</text>
         </div>
       </div>
@@ -106,7 +118,13 @@
       <div class="modal-content">
         <text class="modal-title">步数目标</text>
         <text class="input-label">今日目标步数</text>
-        <input class="modal-input" type="number" placeholder="请输入今日目标步数" value="{{tempTargetSteps}}" onchange="onTargetStepsChange"></input>
+        <input
+          class="modal-input"
+          type="number"
+          placeholder="请输入今日目标步数"
+          value="{{tempTargetSteps}}"
+          onchange="onTargetStepsChange"
+        />
         <div class="modal-btn-group">
           <div class="modal-btn cancel-btn" onclick="closeTargetModal">
             <text class="btn-text-gray">取消</text>
@@ -122,13 +140,25 @@
     <div class="modal-mask" if="{{showRecordModal}}">
       <div class="modal-content">
         <text class="modal-title">步数记录</text>
-        
+
         <text class="input-label">运动时长(分钟)</text>
-        <input class="modal-input" type="number" placeholder="请输入运动时长" value="{{tempDuration}}" onchange="onDurationChange"></input>
-        
+        <input
+          class="modal-input"
+          type="number"
+          placeholder="请输入运动时长"
+          value="{{tempDuration}}"
+          onchange="onDurationChange"
+        />
+
         <text class="input-label">运动距离(公里)</text>
-        <input class="modal-input" type="number" placeholder="请输入运动距离" value="{{tempDistance}}" onchange="onDistanceChange"></input>
-        
+        <input
+          class="modal-input"
+          type="number"
+          placeholder="请输入运动距离"
+          value="{{tempDistance}}"
+          onchange="onDistanceChange"
+        />
+
         <div class="modal-btn-group">
           <div class="modal-btn cancel-btn" onclick="closeRecordModal">
             <text class="btn-text-gray">取消</text>
@@ -144,21 +174,25 @@
 
 <script>
 import prompt from '@system.prompt'
+import storage from '@system.storage'
 
 export default {
   data: {
     currentDate: '',
     // 状态数据
     targetSteps: 0,
+    todaySteps: 0,
+    todayDuration: 0,
+    todayCalories: 0,
     totalSteps: 0,
     totalDuration: 0,
     totalCalories: 0,
     totalCount: 0,
-    
+
     // 模态框控制
     showTargetModal: false,
     showRecordModal: false,
-    
+
     // 临时输入数据
     tempTargetSteps: '',
     tempDuration: '',
@@ -166,18 +200,75 @@ export default {
   },
   onInit() {
     this.initDate()
+    this.loadData()
   },
   initDate() {
     const date = new Date()
     const year = date.getFullYear()
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
-    const day = date.getDate().toString().padStart(2, '0')
+    const day = date
+      .getDate()
+      .toString()
+      .padStart(2, '0')
     this.currentDate = `${year}-${month}-${day}`
   },
-  
+
+  loadData() {
+    storage.get({
+      key: 'steps_data',
+      success: data => {
+        if (data) {
+          const parsedData = JSON.parse(data)
+
+          // 恢复累计数据
+          this.totalSteps = parsedData.totalSteps || 0
+          this.totalDuration = parsedData.totalDuration || 0
+          this.totalCalories = parsedData.totalCalories || 0
+          this.totalCount = parsedData.totalCount || 0
+
+          // 检查是否是同一天，如果是则恢复今日数据，否则重置
+          if (parsedData.date === this.currentDate) {
+            this.todaySteps = parsedData.todaySteps || 0
+            this.todayDuration = parsedData.todayDuration || 0
+            this.todayCalories = parsedData.todayCalories || 0
+            this.targetSteps = parsedData.targetSteps || 0
+          } else {
+            // 新的一天，重置今日数据和目标步数
+            this.todaySteps = 0
+            this.todayDuration = 0
+            this.todayCalories = 0
+            this.targetSteps = 0
+            // 保存重置后的数据
+            this.saveData()
+          }
+        }
+      }
+    })
+  },
+
+  saveData() {
+    const dataToSave = {
+      date: this.currentDate,
+      targetSteps: this.targetSteps,
+      todaySteps: this.todaySteps,
+      todayDuration: this.todayDuration,
+      todayCalories: this.todayCalories,
+      totalSteps: this.totalSteps,
+      totalDuration: this.totalDuration,
+      totalCalories: this.totalCalories,
+      totalCount: this.totalCount
+    }
+
+    storage.set({
+      key: 'steps_data',
+      value: JSON.stringify(dataToSave)
+    })
+  },
+
   // 目标设置相关方法
   openTargetModal() {
-    this.tempTargetSteps = this.targetSteps > 0 ? this.targetSteps.toString() : ''
+    this.tempTargetSteps =
+      this.targetSteps > 0 ? this.targetSteps.toString() : ''
     this.showTargetModal = true
   },
   closeTargetModal() {
@@ -192,10 +283,11 @@ export default {
       return
     }
     this.targetSteps = parseInt(this.tempTargetSteps)
+    this.saveData() // 保存目标设置
     this.showTargetModal = false
     prompt.showToast({ message: '设置成功' })
   },
-  
+
   // 记录步数相关方法
   openRecordModal() {
     this.tempDuration = ''
@@ -216,322 +308,389 @@ export default {
       prompt.showToast({ message: '请输入完整信息' })
       return
     }
-    
-    // 简单的模拟计算：1公里约等于1300步，1步约等于0.04千卡
+
+    // 1米=1步=0.05千卡
     const duration = parseInt(this.tempDuration)
     const distance = parseFloat(this.tempDistance)
-    const steps = Math.floor(distance * 1300)
-    const calories = Math.floor(steps * 0.04)
-    
+
+    // 1公里 = 1000米 = 1000步
+    const steps = Math.floor(distance * 1000)
+    // 1步 = 0.05千卡
+    const calories = Math.floor(steps * 0.05)
+
+    // 更新今日数据
+    this.todaySteps += steps
+    this.todayDuration += duration
+    this.todayCalories += calories
+
     // 更新累计数据
     this.totalSteps += steps
     this.totalDuration += duration
     this.totalCalories += calories
     this.totalCount += 1
-    
+
+    this.saveData() // 保存更新后的数据
+
     this.showRecordModal = false
     prompt.showToast({ message: '添加成功' })
+  },
+
+  // 删除今日数据
+  deleteTodayData() {
+    // 从累计数据中减去今日数据
+    this.totalSteps -= this.todaySteps
+    this.totalDuration -= this.todayDuration
+    this.totalCalories -= this.todayCalories
+    if (this.totalCount > 0) {
+      this.totalCount -= 1
+    }
+
+    // 确保累计数据不为负数
+    if (this.totalSteps < 0) this.totalSteps = 0
+    if (this.totalDuration < 0) this.totalDuration = 0
+    if (this.totalCalories < 0) this.totalCalories = 0
+
+    // 重置今日数据
+    this.todaySteps = 0
+    this.todayDuration = 0
+    this.todayCalories = 0
+
+    this.saveData()
+    prompt.showToast({ message: '今日数据已删除' })
   }
 }
 </script>
 
 <style>
-  .steps-container {
-    flex-direction: column;
-    background-color: #F5F7FA;
-    padding-bottom: 50px;
-  }
+.steps-container {
+  flex-direction: column;
+  background-color: #f5f7fa;
+  padding-bottom: 50px;
+}
 
-  /* 顶部区域 */
-  .top-section {
-    width: 100%;
-    height: 850px;
-    position: relative;
-    flex-direction: column;
-    align-items: center;
-  }
+/* 顶部区域 */
+.top-section {
+  width: 100%;
+  height: 950px;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .top-bg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    object-fit: cover;
-  }
+.top-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
 
-  .header-info {
-    width: 100%;
-    padding: 30px 40px;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-  }
+.header-info {
+  width: 100%;
+  padding: 30px 20px 30px 40px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+}
 
-  .app-info {
-    flex-direction: row;
-    align-items: center;
-  }
+.app-logo {
+  width: 300px;
+  height: 60px;
+  object-fit: contain;
+  margin-left: -20px;
+}
 
-  .app-icon {
-    width: 60px;
-    height: 60px;
-    margin-right: 15px;
-    border-radius: 15px;
-  }
+.date-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: #000000;
+}
 
-  .app-name {
-    font-size: 36px;
-    font-weight: bold;
-    color: #000000;
-  }
+.character-img {
+  width: 800px;
+  height: 800px;
+  object-fit: contain;
+  margin-top: 20px;
+}
 
-  .date-text {
-    font-size: 36px;
-    font-weight: bold;
-    color: #000000;
-  }
+.today-stats-card {
+  width: 92%;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 30px;
+  padding: 40px 20px;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  bottom: 10px;
+  left: 4%;
+}
 
-  .character-img {
-    width: 500px;
-    height: 500px;
-    object-fit: contain;
-    margin-top: 20px;
-  }
+.stat-item {
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
 
-  .today-stats-card {
-    width: 92%;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 30px;
-    padding: 30px 0;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: -60px; /* 上移覆盖部分人物 */
-  }
+.stat-label {
+  font-size: 26px;
+  color: #666666;
+  margin-bottom: 10px;
+}
 
-  .stat-item {
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-  }
+.stat-value {
+  font-size: 48px;
+  color: #000000;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
 
-  .stat-label {
-    font-size: 26px;
-    color: #666666;
-    margin-bottom: 10px;
-  }
+.stat-unit {
+  font-size: 24px;
+  color: #999999;
+}
 
-  .stat-value {
-    font-size: 48px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
+.stat-divider {
+  width: 2px;
+  height: 60px;
+  background-color: #eeeeee;
+}
 
-  .stat-unit {
-    font-size: 24px;
-    color: #999999;
-  }
+/* 目标设置 */
+.target-card {
+  width: 92%;
+  height: 120px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  margin-top: 30px;
+  margin-left: 4%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+}
 
-  .stat-divider {
-    width: 2px;
-    height: 60px;
-    background-color: #eeeeee;
-  }
+.target-label {
+  font-size: 32px;
+  color: #333333;
+  font-weight: bold;
+}
 
-  /* 目标设置 */
-  .target-card {
-    width: 92%;
-    height: 120px;
-    background-color: #ffffff;
-    border-radius: 30px;
-    margin-top: 30px;
-    margin-left: 4%;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 40px;
-  }
+.target-setting {
+  flex-direction: row;
+  align-items: center;
+}
 
-  .target-label {
-    font-size: 32px;
-    color: #333333;
-    font-weight: bold;
-  }
+.target-value-text {
+  font-size: 42px;
+  font-weight: bold;
+  color: #333333;
+  margin-right: 20px;
+}
 
-  .target-setting {
-    flex-direction: row;
-    align-items: center;
-  }
+.setting-icon {
+  width: 60px;
+  height: 60px;
+}
 
-  .target-value-text {
-    font-size: 28px;
-    color: #999999;
-    margin-right: 20px;
-  }
+/* 添加按钮 */
+.add-btn {
+  width: 92%;
+  height: 100px;
+  background-color: #8a6dff;
+  border-radius: 50px;
+  margin-top: 30px;
+  margin-left: 4%;
+  justify-content: center;
+  align-items: center;
+}
 
-  .setting-icon {
-    width: 60px;
-    height: 60px;
-  }
+.add-btn-text {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: bold;
+}
 
-  /* 添加按钮 */
-  .add-btn {
-    width: 92%;
-    height: 100px;
-    background-color: #8A6DFF;
-    border-radius: 50px;
-    margin-top: 30px;
-    margin-left: 4%;
-    justify-content: center;
-    align-items: center;
-  }
+/* 双按钮容器 */
+.dual-btn-container {
+  width: 92%;
+  margin-top: 30px;
+  margin-left: 4%;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-  .add-btn-text {
-    color: #ffffff;
-    font-size: 36px;
-    font-weight: bold;
-  }
+.delete-btn {
+  width: 48%;
+  height: 100px;
+  background-color: #ffffff;
+  border-radius: 50px;
+  border: 2px solid #8a6dff;
+  justify-content: center;
+  align-items: center;
+}
 
-  /* 累计数据 */
-  .section-title {
-    font-size: 32px;
-    color: #333333;
-    font-weight: bold;
-    margin-top: 40px;
-    margin-left: 4%;
-    margin-bottom: 20px;
-  }
+.delete-btn-text {
+  color: #8a6dff;
+  font-size: 32px;
+  font-weight: bold;
+}
 
-  .cumulative-list {
-    width: 92%;
-    margin-left: 4%;
-    flex-direction: column;
-  }
+.continue-btn {
+  width: 48%;
+  height: 100px;
+  background-color: #8a6dff;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+}
 
-  .data-card {
-    width: 100%;
-    height: 160px;
-    background-color: #ffffff;
-    border-radius: 30px;
-    margin-bottom: 20px;
-    flex-direction: row;
-    align-items: center;
-    padding: 0 40px;
-  }
+.continue-btn-text {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: bold;
+}
 
-  .icon-wrapper {
-    width: 90px;
-    height: 90px;
-    background-color: #F5F7FA;
-    border-radius: 45px;
-    justify-content: center;
-    align-items: center;
-    margin-right: 30px;
-  }
+/* 累计数据 */
+.section-title {
+  font-size: 32px;
+  color: #333333;
+  font-weight: bold;
+  margin-top: 40px;
+  margin-left: 4%;
+  margin-bottom: 20px;
+}
 
-  .data-icon {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-  }
+.cumulative-list {
+  width: 92%;
+  margin-left: 4%;
+  flex-direction: column;
+}
 
-  .data-info {
-    flex-direction: column;
-    justify-content: center;
-  }
+.data-card {
+  width: 100%;
+  height: 160px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 40px;
+}
 
-  .data-num {
-    font-size: 40px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+.icon-wrapper {
+  width: 130px;
+  height: 130px;
+  background-color: #f5f7fa;
+  border-radius: 65px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px;
+}
 
-  .data-desc {
-    font-size: 26px;
-    color: #999999;
-  }
+.data-icon {
+  width: 95px;
+  height: 95px;
+  object-fit: contain;
+}
 
-  /* 模态框样式 */
-  .modal-mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-  }
+.data-info {
+  flex-direction: column;
+  justify-content: center;
+}
 
-  .modal-content {
-    width: 650px;
-    background-color: #ffffff;
-    border-radius: 40px;
-    padding: 50px;
-    flex-direction: column;
-    align-items: center;
-  }
+.data-num {
+  font-size: 40px;
+  color: #000000;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-  .modal-title {
-    font-size: 40px;
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 50px;
-  }
+.data-desc {
+  font-size: 26px;
+  color: #999999;
+}
 
-  .input-label {
-    width: 100%;
-    font-size: 30px;
-    color: #333333;
-    margin-bottom: 20px;
-    text-align: left;
-  }
+/* 模态框样式 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
 
-  .modal-input {
-    width: 100%;
-    height: 100px;
-    background-color: #F8F9FA;
-    border-radius: 20px;
-    padding: 0 30px;
-    font-size: 30px;
-    margin-bottom: 40px;
-  }
+.modal-content {
+  width: 650px;
+  background-color: #ffffff;
+  border-radius: 40px;
+  padding: 50px;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .modal-btn-group {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
+.modal-title {
+  font-size: 40px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 50px;
+}
 
-  .modal-btn {
-    width: 260px;
-    height: 90px;
-    border-radius: 45px;
-    justify-content: center;
-    align-items: center;
-  }
+.input-label {
+  width: 100%;
+  font-size: 30px;
+  color: #333333;
+  margin-bottom: 20px;
+  text-align: left;
+}
 
-  .cancel-btn {
-    border: 2px solid #8A6DFF;
-    background-color: #ffffff;
-  }
+.modal-input {
+  width: 100%;
+  height: 100px;
+  background-color: #f8f9fa;
+  border-radius: 20px;
+  padding: 0 30px;
+  font-size: 30px;
+  margin-bottom: 40px;
+}
 
-  .confirm-btn {
-    background-color: #8A6DFF;
-  }
+.modal-btn-group {
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+}
 
-  .btn-text-gray {
-    font-size: 32px;
-    color: #666666;
-  }
+.modal-btn {
+  width: 260px;
+  height: 90px;
+  border-radius: 45px;
+  justify-content: center;
+  align-items: center;
+}
 
-  .btn-text-white {
-    font-size: 32px;
-    color: #ffffff;
-  }
+.cancel-btn {
+  border: 2px solid #8a6dff;
+  background-color: #ffffff;
+}
+
+.confirm-btn {
+  background-color: #8a6dff;
+}
+
+.btn-text-gray {
+  font-size: 32px;
+  color: #666666;
+}
+
+.btn-text-white {
+  font-size: 32px;
+  color: #ffffff;
+}
 </style>

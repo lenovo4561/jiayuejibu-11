@@ -1,0 +1,14 @@
+{
+  "app": {
+    "name": "嘉悦计步"
+  },
+  "pages": {
+    "demo": {
+      "title": "嘉悦计步",
+      "steps": "计步",
+      "checkin": "打卡",
+      "health": "健康",
+      "mine": "我的"
+    }
+  }
+}

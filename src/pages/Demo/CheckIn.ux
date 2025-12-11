@@ -1,20 +1,899 @@
 <template>
-  <div class="content-container">
-    <text class="page-title">每日打卡</text>
-  </div>
+  <stack class="page-stack">
+    <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
+    <div class="checkin-container">
+      <!-- 顶部标题 -->
+      <text class="page-title">每日打卡</text>
+
+      <!-- 打卡类型选择 -->
+      <div class="type-selector">
+        <!-- 喝水 -->
+        <div class="type-item" onclick="selectType(0)">
+          <stack class="icon-stack">
+            <image
+              class="type-bg"
+              src="{{selectedType === 0 ? '/assets/img/zise.png' : '/assets/img/huise.png'}}"
+            ></image>
+            <image
+              class="type-icon"
+              src="{{selectedType === 0 ? '/assets/img/heshui.png' : '/assets/img/heshui-3.png'}}"
+            ></image>
+          </stack>
+          <text
+            class="{{selectedType === 0 ? 'type-text-selected' : 'type-text'}}"
+            >喝水</text
+          >
+        </div>
+
+        <!-- 早起 -->
+        <div class="type-item" onclick="selectType(1)">
+          <stack class="icon-stack">
+            <image
+              class="type-bg"
+              src="{{selectedType === 1 ? '/assets/img/zise.png' : '/assets/img/huise.png'}}"
+            ></image>
+            <image
+              class="type-icon"
+              src="{{selectedType === 1 ? '/assets/img/zaoqi-1.png' : '/assets/img/zaoqi.png'}}"
+            ></image>
+          </stack>
+          <text
+            class="{{selectedType === 1 ? 'type-text-selected' : 'type-text'}}"
+            >早起</text
+          >
+        </div>
+
+        <!-- 运动 -->
+        <div class="type-item" onclick="selectType(2)">
+          <stack class="icon-stack">
+            <image
+              class="type-bg"
+              src="{{selectedType === 2 ? '/assets/img/zise.png' : '/assets/img/huise.png'}}"
+            ></image>
+            <image
+              class="type-icon"
+              src="{{selectedType === 2 ? '/assets/img/yundong-1.png' : '/assets/img/yundong.png'}}"
+            ></image>
+          </stack>
+          <text
+            class="{{selectedType === 2 ? 'type-text-selected' : 'type-text'}}"
+            >运动</text
+          >
+        </div>
+      </div>
+
+      <!-- 打卡按钮 -->
+      <div
+        class="{{((selectedType === 1 && todayWakeUpTime) || (selectedType === 2 && todaySportSteps)) ? 'clockin-btn-disabled' : 'clockin-btn'}}"
+        onclick="handleClockIn"
+      >
+        <text class="btn-text">{{ getButtonText() }}</text>
+      </div>
+
+      <!-- 日历区域 -->
+      <div class="calendar-card">
+        <div class="calendar-header">
+          <div class="arrow-btn" onclick="prevMonth">
+            <image class="arrow-icon" src="/assets/img/zuo.png"></image>
+          </div>
+          <text class="calendar-title">{{ currentYearMonth }}</text>
+          <div class="arrow-btn" onclick="nextMonth">
+            <image class="arrow-icon" src="/assets/img/you.png"></image>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-box">
+            <text class="stat-val">{{ monthCompletionRate }}%</text>
+            <text class="stat-lbl">月完成度</text>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-box">
+            <text class="stat-val">{{ monthCheckinDays }}</text>
+            <text class="stat-lbl">月打卡天数</text>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-box">
+            <text class="stat-val">{{ consecutiveDays }}</text>
+            <text class="stat-lbl">已连续打卡天</text>
+          </div>
+        </div>
+
+        <!-- 动态日历网格 -->
+        <div class="calendar-grid">
+          <text class="week-day">日</text>
+          <text class="week-day">一</text>
+          <text class="week-day">二</text>
+          <text class="week-day">三</text>
+          <text class="week-day">四</text>
+          <text class="week-day">五</text>
+          <text class="week-day">六</text>
+
+          <block for="{{calendarDays}}">
+            <div
+              class="{{$item.isToday ? 'day-cell-today' : ($item.hasCheckin ? 'day-cell-checked' : 'day-cell-wrapper')}}"
+            >
+              <!-- 直接在日期上显示打卡数据 -->
+              <text
+                class="checkin-data-text"
+                if="{{selectedType === 0 && $item.waterAmount}}"
+                >{{ $item.waterAmount }}ml</text
+              >
+              <text
+                class="checkin-data-text"
+                if="{{selectedType === 1 && $item.wakeUpTime}}"
+                >{{ $item.wakeUpTime }}</text
+              >
+              <text
+                class="checkin-data-text"
+                if="{{selectedType === 2 && $item.sportSteps}}"
+                >{{ $item.sportSteps }}步</text
+              >
+              <text
+                class="{{$item.isToday ? 'today-text' : ($item.hasCheckin ? 'checked-day-text' : 'day-text')}}"
+                >{{ $item.day }}</text
+              >
+            </div>
+          </block>
+        </div>
+      </div>
+    </div>
+
+    <!-- 喝水打卡弹窗 -->
+    <stack class="dialog-overlay" if="{{showWaterDialog}}">
+      <div class="mask" onclick="closeDialog"></div>
+      <div class="dialog-center">
+        <div class="dialog-box">
+          <text class="dialog-title">喝水打卡</text>
+          <text class="dialog-label">本次喝水量（ml）</text>
+          <input
+            class="dialog-input"
+            type="number"
+            placeholder="请输入本次喝水量"
+            value="{{waterAmount}}"
+            onchange="onWaterInput"
+          />
+          <div class="dialog-btns">
+            <div class="dialog-btn-cancel" onclick="closeDialog">
+              <text class="btn-cancel-text">取消</text>
+            </div>
+            <div class="dialog-btn-confirm" onclick="confirmWaterClockIn">
+              <text class="btn-confirm-text">打卡</text>
+            </div>
+          </div>
+        </div>
+      </div>
+    </stack>
+
+    <!-- 运动打卡弹窗 -->
+    <stack class="dialog-overlay" if="{{showSportDialog}}">
+      <div class="mask" onclick="closeDialog"></div>
+      <div class="dialog-center">
+        <div class="dialog-box">
+          <text class="dialog-title">运动打卡</text>
+          <text class="dialog-label">本次运动步数</text>
+          <input
+            class="dialog-input"
+            type="number"
+            placeholder="请输入本次运动步数"
+            value="{{sportSteps}}"
+            onchange="onSportInput"
+          />
+          <div class="dialog-btns">
+            <div class="dialog-btn-cancel" onclick="closeDialog">
+              <text class="btn-cancel-text">取消</text>
+            </div>
+            <div class="dialog-btn-confirm" onclick="confirmSportClockIn">
+              <text class="btn-confirm-text">打卡</text>
+            </div>
+          </div>
+        </div>
+      </div>
+    </stack>
+  </stack>
 </template>
 
+<script>
+import prompt from '@system.prompt'
+import storage from '@system.storage'
+
+export default {
+  data: {
+    selectedType: 0, // 0: 喝水, 1: 早起, 2: 运动
+    showWaterDialog: false,
+    waterAmount: '',
+    todayWaterAmount: '',
+    todayWakeUpTime: '',
+    showSportDialog: false,
+    sportSteps: '',
+    todaySportSteps: '',
+    // 日期相关数据
+    selectedDate: '',
+    isToday: true,
+    currentYearMonth: '',
+    calendarDays: [],
+    monthCheckinDays: 0,
+    monthCompletionRate: '0',
+    consecutiveDays: 0,
+    // 存储所有打卡数据
+    checkinDataCache: {}
+  },
+  onInit() {
+    this.selectedDate = this.getTodayDate()
+    this.currentYearMonth = this.getYearMonth(this.selectedDate)
+    this.loadAllCheckinData()
+  },
+  // 加载所有打卡数据
+  loadAllCheckinData() {
+    storage.get({
+      key: 'all_checkin_data',
+      success: data => {
+        if (data) {
+          try {
+            this.checkinDataCache = JSON.parse(data)
+          } catch (e) {
+            this.checkinDataCache = {}
+          }
+        }
+        this.loadCheckinData()
+        this.generateCalendar()
+        this.calculateStats()
+      },
+      fail: () => {
+        this.checkinDataCache = {}
+        this.loadCheckinData()
+        this.generateCalendar()
+        this.calculateStats()
+      }
+    })
+  },
+  // 保存所有打卡数据
+  saveAllCheckinData() {
+    storage.set({
+      key: 'all_checkin_data',
+      value: JSON.stringify(this.checkinDataCache)
+    })
+  },
+  loadCheckinData() {
+    const date = this.selectedDate
+    const dateData = this.checkinDataCache[date] || {}
+    this.todayWaterAmount = dateData.water || ''
+    this.todayWakeUpTime = dateData.wakeup || ''
+    this.todaySportSteps = dateData.sport || ''
+  },
+  getTodayDate() {
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = (now.getMonth() + 1).toString().padStart(2, '0')
+    const day = now
+      .getDate()
+      .toString()
+      .padStart(2, '0')
+    return `${year}-${month}-${day}`
+  },
+  getYearMonth(dateStr) {
+    return dateStr.substring(0, 7)
+  },
+  // 月份切换方法
+  prevMonth() {
+    const [year, month] = this.currentYearMonth.split('-').map(Number)
+    let newYear = year
+    let newMonth = month - 1
+    if (newMonth < 1) {
+      newMonth = 12
+      newYear--
+    }
+    this.currentYearMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`
+    this.generateCalendar()
+    this.calculateStats()
+  },
+  nextMonth() {
+    const [year, month] = this.currentYearMonth.split('-').map(Number)
+    let newYear = year
+    let newMonth = month + 1
+    if (newMonth > 12) {
+      newMonth = 1
+      newYear++
+    }
+    this.currentYearMonth = `${newYear}-${newMonth.toString().padStart(2, '0')}`
+    this.generateCalendar()
+    this.calculateStats()
+  },
+  formatDate(date) {
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date
+      .getDate()
+      .toString()
+      .padStart(2, '0')
+    return `${year}-${month}-${day}`
+  },
+  // 生成日历数据
+  generateCalendar() {
+    const [year, month] = this.currentYearMonth.split('-').map(Number)
+    const firstDay = new Date(year, month - 1, 1)
+    const lastDay = new Date(year, month, 0)
+    const daysInMonth = lastDay.getDate()
+    const startDayOfWeek = firstDay.getDay()
+
+    const days = []
+    const todayStr = this.getTodayDate()
+
+    // 填充月初空白
+    for (let i = 0; i < startDayOfWeek; i++) {
+      days.push({ day: '', date: '', isEmpty: true })
+    }
+
+    // 填充日期
+    for (let i = 1; i <= daysInMonth; i++) {
+      const dateStr = `${year}-${month
+        .toString()
+        .padStart(2, '0')}-${i.toString().padStart(2, '0')}`
+      const dateData = this.checkinDataCache[dateStr] || {}
+      const hasCheckin = this.checkHasCheckin(dateData)
+
+      days.push({
+        day: i,
+        date: dateStr,
+        isToday: dateStr === todayStr,
+        isSelected: dateStr === this.selectedDate,
+        hasCheckin: hasCheckin,
+        waterAmount: dateData.water || '',
+        wakeUpTime: dateData.wakeup || '',
+        sportSteps: dateData.sport || ''
+      })
+    }
+
+    this.calendarDays = days
+  },
+  checkHasCheckin(dateData) {
+    if (this.selectedType === 0) {
+      return !!dateData.water
+    } else if (this.selectedType === 1) {
+      return !!dateData.wakeup
+    } else {
+      return !!dateData.sport
+    }
+  },
+  // 计算统计数据
+  calculateStats() {
+    const [year, month] = this.currentYearMonth.split('-').map(Number)
+    const daysInMonth = new Date(year, month, 0).getDate()
+    let checkinDays = 0
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      const dateStr = `${year}-${month
+        .toString()
+        .padStart(2, '0')}-${i.toString().padStart(2, '0')}`
+      const dateData = this.checkinDataCache[dateStr] || {}
+      if (this.checkHasCheckin(dateData)) {
+        checkinDays++
+      }
+    }
+
+    this.monthCheckinDays = checkinDays
+    this.monthCompletionRate = ((checkinDays / daysInMonth) * 100).toFixed(1)
+
+    // 计算连续打卡天数
+    this.calculateConsecutiveDays()
+  },
+  calculateConsecutiveDays() {
+    let consecutive = 0
+    const today = new Date(this.getTodayDate())
+
+    for (let i = 0; i < 365; i++) {
+      const checkDate = new Date(today)
+      checkDate.setDate(today.getDate() - i)
+      const dateStr = this.formatDate(checkDate)
+      const dateData = this.checkinDataCache[dateStr] || {}
+
+      if (this.checkHasCheckin(dateData)) {
+        consecutive++
+      } else {
+        break
+      }
+    }
+
+    this.consecutiveDays = consecutive
+  },
+  selectType(type) {
+    this.selectedType = type
+    this.loadCheckinData()
+    this.generateCalendar()
+    this.calculateStats()
+  },
+  getButtonText() {
+    if (this.selectedType === 0 && this.todayWaterAmount) {
+      return '继续喝水'
+    }
+    if (this.selectedType === 1 && this.todayWakeUpTime) {
+      return '已打卡'
+    }
+    if (this.selectedType === 2 && this.todaySportSteps) {
+      return '已打卡'
+    }
+    const types = ['喝水', '早起', '运动']
+    return `${types[this.selectedType]}打卡`
+  },
+  handleClockIn() {
+    if (this.selectedType === 0) {
+      this.showWaterDialog = true
+    } else if (this.selectedType === 1) {
+      if (this.todayWakeUpTime) return
+      const now = new Date()
+      const hours = now
+        .getHours()
+        .toString()
+        .padStart(2, '0')
+      const minutes = now
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')
+      this.todayWakeUpTime = `${hours}:${minutes}`
+      const today = this.getTodayDate()
+      // 更新缓存数据
+      if (!this.checkinDataCache[today]) {
+        this.checkinDataCache[today] = {}
+      }
+      this.checkinDataCache[today].wakeup = this.todayWakeUpTime
+      this.saveAllCheckinData()
+      this.generateCalendar()
+      this.calculateStats()
+      prompt.showToast({
+        message: '早起打卡成功'
+      })
+    } else if (this.selectedType === 2) {
+      if (this.todaySportSteps) return
+      this.showSportDialog = true
+    }
+  },
+  closeDialog() {
+    this.showWaterDialog = false
+    this.waterAmount = ''
+    this.showSportDialog = false
+    this.sportSteps = ''
+  },
+  onWaterInput(e) {
+    this.waterAmount = e.value
+  },
+  onSportInput(e) {
+    this.sportSteps = e.value
+  },
+  confirmWaterClockIn() {
+    if (!this.waterAmount) {
+      prompt.showToast({
+        message: '请输入喝水量'
+      })
+      return
+    }
+    const currentAmount = parseInt(this.todayWaterAmount || 0)
+    const newAmount = parseInt(this.waterAmount)
+    this.todayWaterAmount = (currentAmount + newAmount).toString()
+    const today = this.getTodayDate()
+    // 更新缓存数据
+    if (!this.checkinDataCache[today]) {
+      this.checkinDataCache[today] = {}
+    }
+    this.checkinDataCache[today].water = this.todayWaterAmount
+    this.saveAllCheckinData()
+    this.generateCalendar()
+    this.calculateStats()
+    this.showWaterDialog = false
+    prompt.showToast({
+      message: `喝水打卡成功: ${this.waterAmount}ml，今日总计: ${this.todayWaterAmount}ml`
+    })
+    this.waterAmount = ''
+  },
+  confirmSportClockIn() {
+    if (!this.sportSteps) {
+      prompt.showToast({
+        message: '请输入步数'
+      })
+      return
+    }
+    this.todaySportSteps = this.sportSteps
+    const today = this.getTodayDate()
+    // 更新缓存数据
+    if (!this.checkinDataCache[today]) {
+      this.checkinDataCache[today] = {}
+    }
+    this.checkinDataCache[today].sport = this.todaySportSteps
+    this.saveAllCheckinData()
+    this.generateCalendar()
+    this.calculateStats()
+    this.showSportDialog = false
+    prompt.showToast({
+      message: `运动打卡成功: ${this.sportSteps}步`
+    })
+    this.sportSteps = ''
+  }
+}
+</script>
+
 <style>
-  .content-container {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f5f5f5;
-  }
-  .page-title {
-    font-size: 36px;
-    color: #333333;
-  }
+.page-stack {
+  width: 100%;
+  height: 100%;
+  background-color: #F5F7FA;
+}
+
+.top-bg {
+  width: 100%;
+  height: 950px;
+  object-fit: cover;
+}
+
+.checkin-container {
+  flex-direction: column;
+  padding: 30px;
+  height: 100%;
+}
+
+.page-title {
+  font-size: 40px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 30px;
+  margin-top: 20px;
+}
+
+.type-selector {
+  width: 100%;
+  height: 260px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 30px;
+}
+
+.type-item {
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+}
+
+.icon-stack {
+  width: 140px;
+  height: 140px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.type-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.type-icon {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.type-text {
+  font-size: 30px;
+  color: #666666;
+}
+
+.type-text-selected {
+  font-size: 30px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.clockin-btn {
+  width: 100%;
+  height: 100px;
+  background-color: #8A6DFF;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.clockin-btn-disabled {
+  width: 100%;
+  height: 100px;
+  background-color: #C7B8FF;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.btn-text {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+/* Calendar Styles */
+.calendar-card {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  flex-direction: column;
+}
+
+.calendar-header {
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.arrow-btn {
+  width: 70px;
+  height: 70px;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F7FA;
+  border-radius: 35px;
+}
+
+.calendar-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0 30px;
+}
+
+.arrow-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.calendar-title {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0 30px;
+}
+
+.arrow-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.stats-row {
+  width: 100%;
+  height: 120px;
+  background-color: #F5F7FA;
+  border-radius: 20px;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.stat-box {
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-val {
+  font-size: 36px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.stat-lbl {
+  font-size: 24px;
+  color: #999999;
+  margin-top: 5px;
+}
+
+.stat-divider {
+  width: 2px;
+  height: 60px;
+  background-color: #dddddd;
+}
+
+.calendar-grid {
+  width: 100%;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.week-day {
+  width: 13%; /* Approx 100/7 */
+  text-align: center;
+  font-size: 28px;
+  color: #999999;
+  margin-bottom: 20px;
+}
+
+.day-cell-wrapper {
+  width: 13%;
+  height: 100px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.day-cell-today {
+  width: 13%;
+  height: 100px;
+  background-color: #E6E6FA;
+  border-radius: 15px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.day-cell {
+  width: 13%;
+  height: 80px;
+  text-align: center;
+  font-size: 32px;
+  color: #666666;
+  margin-bottom: 10px;
+}
+
+.day-text {
+  font-size: 32px;
+  color: #666666;
+}
+
+.today-text {
+  font-size: 32px;
+  color: #8A6DFF;
+  font-weight: bold;
+}
+
+.day-cell-selected {
+  width: 13%;
+  height: 100px;
+  background-color: #E6E6FA;
+  border-radius: 15px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.day-cell-checked {
+  width: 13%;
+  height: 100px;
+  background-color: #F5F0FF;
+  border-radius: 15px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.checked-day-text {
+  color: #8A6DFF;
+  font-size: 32px;
+}
+
+.selected-day-text {
+  color: #8A6DFF;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.checkin-data-text {
+  font-size: 18px;
+  color: #8A6DFF;
+  margin-bottom: 2px;
+}
+
+.water-text {
+  font-size: 20px;
+  color: #8A6DFF;
+  margin-bottom: 2px;
+}
+
+.dot-text {
+  font-size: 16px;
+  color: #8A6DFF;
+  margin-top: 2px;
+}
+
+/* Dialog Styles */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-center {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-box {
+  width: 930px;
+  background-color: #ffffff;
+  border-radius: 40px;
+  padding: 50px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialog-title {
+  font-size: 42px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 50px;
+}
+
+.dialog-label {
+  width: 100%;
+  font-size: 32px;
+  color: #333333;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.dialog-input {
+  width: 100%;
+  height: 100px;
+  background-color: #F8F8F8;
+  border-radius: 20px;
+  padding: 0 30px;
+  font-size: 30px;
+  margin-bottom: 60px;
+}
+
+.dialog-btns {
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dialog-btn-cancel {
+  width: 380px;
+  height: 100px;
+  border: 2px solid #8A6DFF;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.btn-cancel-text {
+  color: #666666;
+  font-size: 36px;
+}
+
+.dialog-btn-confirm {
+  width: 380px;
+  height: 100px;
+  background-color: #8A6DFF;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-confirm-text {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: bold;
+}
 </style>

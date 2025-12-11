@@ -23,6 +23,9 @@
     },
     {
       "name": "system.app"
+    },
+    {
+      "name": "system.device"
     }
   ],
   "permissions": [
@@ -59,17 +62,22 @@
     "pages": {
       "pages/Splash": {
         "titleBarText": "嘉悦计步",
-        "fullScreen": true
+        "backgroundColor": "transparent",
+        "titleBar": false
       },
       "pages/Demo": {
         "titleBarText": "快应用示例模版",
-        "menu": false
+        "menu": false,
+        "backgroundColor": "transparent",
+        "titleBar": false,
+        "fullScreen": false
       },
       "pages/DemoDetail": {
         "titleBarText": "详情页"
       },
       "pages/Web": {
-        "titleBarText": "详情"
+        "titleBarText": "详情",
+        "titleBar": false
       }
     }
   },

@@ -1,20 +1,132 @@
 <template>
-  <div class="content-container">
-    <text class="page-title">健康数据</text>
+  <div class="page-container">
+    <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
+    <text class="page-title">走路健康</text>
+
+    <list class="question-list">
+      <list-item for="{{questions}}" type="question" class="question-item">
+        <div class="question-card">
+          <text class="question-text">{{ $item.question }}</text>
+          <div class="card-bottom">
+            <image class="question-icon" src="/assets/img/？.png"></image>
+            <div class="answer-button" onclick="showAnswer($item, $idx)">
+              <text class="answer-button-text">查看回答</text>
+            </div>
+          </div>
+        </div>
+      </list-item>
+    </list>
   </div>
 </template>
 
+<script>
+import router from '@system.router'
+import { healthQuestions } from './healthQuestionsData.js'
+
+export default {
+  data: {
+    questions: healthQuestions
+  },
+  showAnswer(item, index) {
+    if (item) {
+      router.push({
+        uri: 'pages/Web',
+        params: {
+          question: item.question,
+          answer: item.answer
+        }
+      })
+    }
+  }
+}
+</script>
+
 <style>
-  .content-container {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: #f5f5f5;
-  }
-  .page-title {
-    font-size: 36px;
-    color: #333333;
-  }
+.page-container {
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  background-color: #f5f7fa;
+}
+
+.top-bg {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.page-title {
+  font-size: 44px;
+  font-weight: bold;
+  color: #333333;
+  margin-left: 30px;
+  margin-top: 80px;
+  margin-bottom: 20px;
+}
+
+.question-list {
+  flex: 1;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-top: 0px;
+  flex-direction: column;
+}
+
+.question-item {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.question-card {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  flex-direction: column;
+  position: relative;
+}
+
+.question-text {
+  width: 100%;
+  font-size: 32px;
+  color: #333333;
+  font-weight: bold;
+  margin-bottom: 20px;
+  lines: 2;
+  text-overflow: ellipsis;
+}
+
+.card-bottom {
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+.question-icon {
+  width: 130px;
+  height: 130px;
+  opacity: 1;
+}
+
+.answer-button {
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 70px;
+  background-color: #8a6dff;
+  border-radius: 35px;
+  justify-content: center;
+  align-items: center;
+}
+
+.answer-button-text {
+  font-size: 28px;
+  color: #ffffff;
+  font-weight: bold;
+}
 </style>
