@@ -1,0 +1,32 @@
+<template>
+  <div class="web-container">
+    <web src="{{url}}" trustedurl="{{url}}"></web>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      url: '',
+      title: ''
+    }
+  },
+  onInit() {
+    this.url = this.url || ''
+    this.title = this.title || '详情'
+  }
+}
+</script>
+
+<style>
+.web-container {
+  width: 100%;
+  height: 100%;
+}
+
+web {
+  width: 100%;
+  height: 100%;
+}
+</style>

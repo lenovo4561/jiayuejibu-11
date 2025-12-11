@@ -1,0 +1,94 @@
+<import name="steps-page" src="./Steps.ux"></import>
+<import name="checkin-page" src="./CheckIn.ux"></import>
+<import name="health-page" src="./Health.ux"></import>
+<import name="mine-page" src="./Mine.ux"></import>
+
+<template>
+  <div class="main-container">
+    <div class="content-area">
+      <steps-page if="{{currentIndex === 0}}"></steps-page>
+      <checkin-page if="{{currentIndex === 1}}"></checkin-page>
+      <health-page if="{{currentIndex === 2}}"></health-page>
+      <mine-page if="{{currentIndex === 3}}"></mine-page>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab-item" onclick="switchTab(0)">
+        <image class="tab-icon" src="{{currentIndex === 0 ? '/assets/img/jibu-s.png' : '/assets/img/jibu-u.png'}}"></image>
+        <text class="tab-text" style="color: {{currentIndex === 0 ? '#7F57FF' : '#999999'}}">计步</text>
+      </div>
+      <div class="tab-item" onclick="switchTab(1)">
+        <image class="tab-icon" src="{{currentIndex === 1 ? '/assets/img/daka-s.png' : '/assets/img/daka-u.png'}}"></image>
+        <text class="tab-text" style="color: {{currentIndex === 1 ? '#7F57FF' : '#999999'}}">打卡</text>
+      </div>
+      <div class="tab-item" onclick="switchTab(2)">
+        <image class="tab-icon" src="{{currentIndex === 2 ? '/assets/img/jianakng-s.png' : '/assets/img/jianakng-u.png'}}"></image>
+        <text class="tab-text" style="color: {{currentIndex === 2 ? '#7F57FF' : '#999999'}}">健康</text>
+      </div>
+      <div class="tab-item" onclick="switchTab(3)">
+        <image class="tab-icon" src="{{currentIndex === 3 ? '/assets/img/mine-s.png' : '/assets/img/mine-u.png'}}"></image>
+        <text class="tab-text" style="color: {{currentIndex === 3 ? '#7F57FF' : '#999999'}}">我的</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data: {
+    currentIndex: 0
+  },
+  onInit() {
+    this.$page.setTitleBar({ text: '嘉悦计步' })
+  },
+  switchTab(index) {
+    this.currentIndex = index
+    const titles = ['嘉悦计步', '每日打卡', '健康数据', '个人中心']
+    this.$page.setTitleBar({ text: titles[index] })
+  }
+}
+</script>
+
+<style>
+  .main-container {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
+  .content-area {
+    flex: 1;
+    width: 100%;
+  }
+
+  .tab-bar {
+    width: 100%;
+    height: 120px;
+    background-color: #ffffff;
+    border-top-width: 1px;
+    border-top-color: #eeeeee;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 10px;
+  }
+
+  .tab-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 100%;
+  }
+
+  .tab-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 8px;
+    object-fit: contain;
+  }
+
+  .tab-text {
+    font-size: 24px;
+  }
+</style>

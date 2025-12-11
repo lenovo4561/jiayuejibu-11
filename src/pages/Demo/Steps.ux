@@ -1,0 +1,537 @@
+<template>
+  <div class="steps-container">
+    <!-- 顶部区域 -->
+    <div class="top-section">
+      <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
+      
+      <!-- 顶部日期和标题 -->
+      <div class="header-info">
+        <div class="app-info">
+          <image class="app-icon" src="/assets/img/logo.png"></image>
+          <text class="app-name">嘉悦计步</text>
+        </div>
+        <text class="date-text">{{currentDate}}</text>
+      </div>
+
+      <!-- 卡通人物 -->
+      <image class="character-img" src="/assets/img/ip.png"></image>
+
+      <!-- 今日数据概览 -->
+      <div class="today-stats-card">
+        <div class="stat-item">
+          <text class="stat-label">今日步数</text>
+          <text class="stat-value">0</text>
+          <text class="stat-unit">步</text>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <text class="stat-label">今日时长</text>
+          <text class="stat-value">0</text>
+          <text class="stat-unit">分钟</text>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <text class="stat-label">今日消耗</text>
+          <text class="stat-value">0</text>
+          <text class="stat-unit">千卡</text>
+        </div>
+      </div>
+    </div>
+
+    <!-- 目标设置 -->
+    <div class="target-card" onclick="openTargetModal">
+      <text class="target-label">今日预计步数</text>
+      <div class="target-setting">
+        <text class="target-value-text">{{targetSteps > 0 ? targetSteps : '未设置'}}</text>
+        <image class="setting-icon" src="/assets/img/chilun.png"></image>
+      </div>
+    </div>
+
+    <!-- 添加步数按钮 -->
+    <div class="add-btn" onclick="openRecordModal">
+      <text class="add-btn-text">添加步数</text>
+    </div>
+
+    <!-- 累计数据 -->
+    <text class="section-title">累计数据</text>
+    
+    <div class="cumulative-list">
+      <!-- 累计步数 -->
+      <div class="data-card">
+        <div class="icon-wrapper">
+          <image class="data-icon" src="/assets/img/leijiyundongbushu.png"></image>
+        </div>
+        <div class="data-info">
+          <text class="data-num">{{totalSteps}}</text>
+          <text class="data-desc">累计运动步数 (步)</text>
+        </div>
+      </div>
+
+      <!-- 累计时长 -->
+      <div class="data-card">
+        <div class="icon-wrapper">
+          <image class="data-icon" src="/assets/img/shijian.png"></image>
+        </div>
+        <div class="data-info">
+          <text class="data-num">{{totalDuration}}</text>
+          <text class="data-desc">累计运动时长 (分钟)</text>
+        </div>
+      </div>
+
+      <!-- 累计消耗 -->
+      <div class="data-card">
+        <div class="icon-wrapper">
+          <image class="data-icon" src="/assets/img/shijian-1.png"></image>
+        </div>
+        <div class="data-info">
+          <text class="data-num">{{totalCalories}}</text>
+          <text class="data-desc">累计运动消耗 (kcal)</text>
+        </div>
+      </div>
+
+      <!-- 累计次数 -->
+      <div class="data-card">
+        <div class="icon-wrapper">
+          <image class="data-icon" src="/assets/img/shijian-2.png"></image>
+        </div>
+        <div class="data-info">
+          <text class="data-num">{{totalCount}}</text>
+          <text class="data-desc">累计运动次数 (次)</text>
+        </div>
+      </div>
+    </div>
+
+    <!-- 目标设置模态框 -->
+    <div class="modal-mask" if="{{showTargetModal}}">
+      <div class="modal-content">
+        <text class="modal-title">步数目标</text>
+        <text class="input-label">今日目标步数</text>
+        <input class="modal-input" type="number" placeholder="请输入今日目标步数" value="{{tempTargetSteps}}" onchange="onTargetStepsChange"></input>
+        <div class="modal-btn-group">
+          <div class="modal-btn cancel-btn" onclick="closeTargetModal">
+            <text class="btn-text-gray">取消</text>
+          </div>
+          <div class="modal-btn confirm-btn" onclick="confirmTarget">
+            <text class="btn-text-white">设置</text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 步数记录模态框 -->
+    <div class="modal-mask" if="{{showRecordModal}}">
+      <div class="modal-content">
+        <text class="modal-title">步数记录</text>
+        
+        <text class="input-label">运动时长(分钟)</text>
+        <input class="modal-input" type="number" placeholder="请输入运动时长" value="{{tempDuration}}" onchange="onDurationChange"></input>
+        
+        <text class="input-label">运动距离(公里)</text>
+        <input class="modal-input" type="number" placeholder="请输入运动距离" value="{{tempDistance}}" onchange="onDistanceChange"></input>
+        
+        <div class="modal-btn-group">
+          <div class="modal-btn cancel-btn" onclick="closeRecordModal">
+            <text class="btn-text-gray">取消</text>
+          </div>
+          <div class="modal-btn confirm-btn" onclick="confirmRecord">
+            <text class="btn-text-white">添加</text>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import prompt from '@system.prompt'
+
+export default {
+  data: {
+    currentDate: '',
+    // 状态数据
+    targetSteps: 0,
+    totalSteps: 0,
+    totalDuration: 0,
+    totalCalories: 0,
+    totalCount: 0,
+    
+    // 模态框控制
+    showTargetModal: false,
+    showRecordModal: false,
+    
+    // 临时输入数据
+    tempTargetSteps: '',
+    tempDuration: '',
+    tempDistance: ''
+  },
+  onInit() {
+    this.initDate()
+  },
+  initDate() {
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    this.currentDate = `${year}-${month}-${day}`
+  },
+  
+  // 目标设置相关方法
+  openTargetModal() {
+    this.tempTargetSteps = this.targetSteps > 0 ? this.targetSteps.toString() : ''
+    this.showTargetModal = true
+  },
+  closeTargetModal() {
+    this.showTargetModal = false
+  },
+  onTargetStepsChange(e) {
+    this.tempTargetSteps = e.value
+  },
+  confirmTarget() {
+    if (!this.tempTargetSteps) {
+      prompt.showToast({ message: '请输入目标步数' })
+      return
+    }
+    this.targetSteps = parseInt(this.tempTargetSteps)
+    this.showTargetModal = false
+    prompt.showToast({ message: '设置成功' })
+  },
+  
+  // 记录步数相关方法
+  openRecordModal() {
+    this.tempDuration = ''
+    this.tempDistance = ''
+    this.showRecordModal = true
+  },
+  closeRecordModal() {
+    this.showRecordModal = false
+  },
+  onDurationChange(e) {
+    this.tempDuration = e.value
+  },
+  onDistanceChange(e) {
+    this.tempDistance = e.value
+  },
+  confirmRecord() {
+    if (!this.tempDuration || !this.tempDistance) {
+      prompt.showToast({ message: '请输入完整信息' })
+      return
+    }
+    
+    // 简单的模拟计算：1公里约等于1300步，1步约等于0.04千卡
+    const duration = parseInt(this.tempDuration)
+    const distance = parseFloat(this.tempDistance)
+    const steps = Math.floor(distance * 1300)
+    const calories = Math.floor(steps * 0.04)
+    
+    // 更新累计数据
+    this.totalSteps += steps
+    this.totalDuration += duration
+    this.totalCalories += calories
+    this.totalCount += 1
+    
+    this.showRecordModal = false
+    prompt.showToast({ message: '添加成功' })
+  }
+}
+</script>
+
+<style>
+  .steps-container {
+    flex-direction: column;
+    background-color: #F5F7FA;
+    padding-bottom: 50px;
+  }
+
+  /* 顶部区域 */
+  .top-section {
+    width: 100%;
+    height: 850px;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .top-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+  }
+
+  .header-info {
+    width: 100%;
+    padding: 30px 40px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .app-info {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .app-icon {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+    border-radius: 15px;
+  }
+
+  .app-name {
+    font-size: 36px;
+    font-weight: bold;
+    color: #000000;
+  }
+
+  .date-text {
+    font-size: 36px;
+    font-weight: bold;
+    color: #000000;
+  }
+
+  .character-img {
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    margin-top: 20px;
+  }
+
+  .today-stats-card {
+    width: 92%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+    padding: 30px 0;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: -60px; /* 上移覆盖部分人物 */
+  }
+
+  .stat-item {
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .stat-label {
+    font-size: 26px;
+    color: #666666;
+    margin-bottom: 10px;
+  }
+
+  .stat-value {
+    font-size: 48px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .stat-unit {
+    font-size: 24px;
+    color: #999999;
+  }
+
+  .stat-divider {
+    width: 2px;
+    height: 60px;
+    background-color: #eeeeee;
+  }
+
+  /* 目标设置 */
+  .target-card {
+    width: 92%;
+    height: 120px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    margin-top: 30px;
+    margin-left: 4%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+  }
+
+  .target-label {
+    font-size: 32px;
+    color: #333333;
+    font-weight: bold;
+  }
+
+  .target-setting {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .target-value-text {
+    font-size: 28px;
+    color: #999999;
+    margin-right: 20px;
+  }
+
+  .setting-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* 添加按钮 */
+  .add-btn {
+    width: 92%;
+    height: 100px;
+    background-color: #8A6DFF;
+    border-radius: 50px;
+    margin-top: 30px;
+    margin-left: 4%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .add-btn-text {
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: bold;
+  }
+
+  /* 累计数据 */
+  .section-title {
+    font-size: 32px;
+    color: #333333;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-left: 4%;
+    margin-bottom: 20px;
+  }
+
+  .cumulative-list {
+    width: 92%;
+    margin-left: 4%;
+    flex-direction: column;
+  }
+
+  .data-card {
+    width: 100%;
+    height: 160px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 40px;
+  }
+
+  .icon-wrapper {
+    width: 90px;
+    height: 90px;
+    background-color: #F5F7FA;
+    border-radius: 45px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px;
+  }
+
+  .data-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+
+  .data-info {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .data-num {
+    font-size: 40px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .data-desc {
+    font-size: 26px;
+    color: #999999;
+  }
+
+  /* 模态框样式 */
+  .modal-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    width: 650px;
+    background-color: #ffffff;
+    border-radius: 40px;
+    padding: 50px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-title {
+    font-size: 40px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 50px;
+  }
+
+  .input-label {
+    width: 100%;
+    font-size: 30px;
+    color: #333333;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .modal-input {
+    width: 100%;
+    height: 100px;
+    background-color: #F8F9FA;
+    border-radius: 20px;
+    padding: 0 30px;
+    font-size: 30px;
+    margin-bottom: 40px;
+  }
+
+  .modal-btn-group {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .modal-btn {
+    width: 260px;
+    height: 90px;
+    border-radius: 45px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cancel-btn {
+    border: 2px solid #8A6DFF;
+    background-color: #ffffff;
+  }
+
+  .confirm-btn {
+    background-color: #8A6DFF;
+  }
+
+  .btn-text-gray {
+    font-size: 32px;
+    color: #666666;
+  }
+
+  .btn-text-white {
+    font-size: 32px;
+    color: #ffffff;
+  }
+</style>
