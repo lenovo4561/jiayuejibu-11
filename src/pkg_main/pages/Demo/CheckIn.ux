@@ -1,6 +1,6 @@
 <template>
   <stack class="page-stack">
-    <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
+    <image class="top-bg" src="/pkg_main/assets/img/top-bg.png"></image>
     <div class="checkin-container">
       <!-- 顶部标题 -->
       <text class="page-title">每日打卡</text>
@@ -12,11 +12,11 @@
           <stack class="icon-stack">
             <image
               class="type-bg"
-              src="{{selectedType === 0 ? '/assets/img/zise.png' : '/assets/img/huise.png'}}"
+              src="{{selectedType === 0 ? '/pkg_main/assets/img/purple.png' : '/pkg_main/assets/img/gray.png'}}"
             ></image>
             <image
               class="type-icon"
-              src="{{selectedType === 0 ? '/assets/img/heshui.png' : '/assets/img/heshui-3.png'}}"
+              src="{{selectedType === 0 ? '/pkg_main/assets/img/water.png' : '/pkg_main/assets/img/water-inactive.png'}}"
             ></image>
           </stack>
           <text
@@ -30,11 +30,11 @@
           <stack class="icon-stack">
             <image
               class="type-bg"
-              src="{{selectedType === 1 ? '/assets/img/zise.png' : '/assets/img/huise.png'}}"
+              src="{{selectedType === 1 ? '/pkg_main/assets/img/purple.png' : '/pkg_main/assets/img/gray.png'}}"
             ></image>
             <image
               class="type-icon"
-              src="{{selectedType === 1 ? '/assets/img/zaoqi-1.png' : '/assets/img/zaoqi.png'}}"
+              src="{{selectedType === 1 ? '/pkg_main/assets/img/early-1.png' : '/pkg_main/assets/img/early.png'}}"
             ></image>
           </stack>
           <text
@@ -48,11 +48,11 @@
           <stack class="icon-stack">
             <image
               class="type-bg"
-              src="{{selectedType === 2 ? '/assets/img/zise.png' : '/assets/img/huise.png'}}"
+              src="{{selectedType === 2 ? '/pkg_main/assets/img/purple.png' : '/pkg_main/assets/img/gray.png'}}"
             ></image>
             <image
               class="type-icon"
-              src="{{selectedType === 2 ? '/assets/img/yundong-1.png' : '/assets/img/yundong.png'}}"
+              src="{{selectedType === 2 ? '/pkg_main/assets/img/exercise-1.png' : '/pkg_main/assets/img/exercise.png'}}"
             ></image>
           </stack>
           <text
@@ -74,11 +74,17 @@
       <div class="calendar-card">
         <div class="calendar-header">
           <div class="arrow-btn" onclick="prevMonth">
-            <image class="arrow-icon" src="/assets/img/zuo.png"></image>
+            <image
+              class="arrow-icon"
+              src="/pkg_main/assets/img/left.png"
+            ></image>
           </div>
           <text class="calendar-title">{{ currentYearMonth }}</text>
           <div class="arrow-btn" onclick="nextMonth">
-            <image class="arrow-icon" src="/assets/img/you.png"></image>
+            <image
+              class="arrow-icon"
+              src="/pkg_main/assets/img/right.png"
+            ></image>
           </div>
         </div>
 
@@ -514,53 +520,53 @@ export default {
 .page-stack {
   width: 100%;
   height: 100%;
-  background-color: #F5F7FA;
+  background-color: #f5f7fa;
 }
 
 .top-bg {
   width: 100%;
-  height: 950px;
+  height: 220px;
   object-fit: cover;
 }
 
 .checkin-container {
   flex-direction: column;
-  padding: 30px;
+  padding: 7px;
   height: 100%;
 }
 
 .page-title {
-  font-size: 40px;
+  font-size: 9px;
   font-weight: bold;
   color: #000000;
-  margin-bottom: 30px;
-  margin-top: 20px;
+  margin-bottom: 7px;
+  margin-top: 5px;
 }
 
 .type-selector {
   width: 100%;
-  height: 260px;
+  height: 60px;
   background-color: #ffffff;
-  border-radius: 30px;
+  border-radius: 7px;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding: 0 20px;
-  margin-bottom: 30px;
+  padding: 0 5px;
+  margin-bottom: 7px;
 }
 
 .type-item {
   flex-direction: column;
   align-items: center;
-  width: 180px;
+  width: 42px;
 }
 
 .icon-stack {
-  width: 140px;
-  height: 140px;
+  width: 32px;
+  height: 32px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .type-bg {
@@ -570,45 +576,45 @@ export default {
 }
 
 .type-icon {
-  width: 70px;
-  height: 70px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
 }
 
 .type-text {
-  font-size: 30px;
+  font-size: 7px;
   color: #666666;
 }
 
 .type-text-selected {
-  font-size: 30px;
+  font-size: 7px;
   color: #000000;
   font-weight: bold;
 }
 
 .clockin-btn {
   width: 100%;
-  height: 100px;
-  background-color: #8A6DFF;
-  border-radius: 50px;
+  height: 23px;
+  background-color: #8a6dff;
+  border-radius: 12px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 7px;
 }
 
 .clockin-btn-disabled {
   width: 100%;
-  height: 100px;
-  background-color: #C7B8FF;
-  border-radius: 50px;
+  height: 23px;
+  background-color: #c7b8ff;
+  border-radius: 12px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 7px;
 }
 
 .btn-text {
   color: #ffffff;
-  font-size: 36px;
+  font-size: 8px;
   font-weight: bold;
 }
 
@@ -616,8 +622,8 @@ export default {
 .calendar-card {
   width: 100%;
   background-color: #ffffff;
-  border-radius: 30px;
-  padding: 30px;
+  border-radius: 7px;
+  padding: 7px;
   flex-direction: column;
 }
 
@@ -626,54 +632,39 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 7px;
 }
 
 .arrow-btn {
-  width: 70px;
-  height: 70px;
+  width: 16px;
+  height: 16px;
   justify-content: center;
   align-items: center;
-  background-color: #F5F7FA;
-  border-radius: 35px;
+  background-color: #f5f7fa;
+  border-radius: 8px;
 }
 
 .calendar-title {
-  font-size: 36px;
+  font-size: 8px;
   font-weight: bold;
-  margin: 0 30px;
+  margin: 0 7px;
 }
 
 .arrow-icon {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.calendar-title {
-  font-size: 36px;
-  font-weight: bold;
-  margin: 0 30px;
-}
-
-.arrow-icon {
-  width: 40px;
-  height: 40px;
+  width: 9px;
+  height: 9px;
   object-fit: contain;
 }
 
 .stats-row {
   width: 100%;
-  height: 120px;
-  background-color: #F5F7FA;
-  border-radius: 20px;
+  height: 28px;
+  background-color: #f5f7fa;
+  border-radius: 5px;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 7px;
 }
 
 .stat-box {
@@ -682,20 +673,20 @@ export default {
 }
 
 .stat-val {
-  font-size: 36px;
+  font-size: 8px;
   font-weight: bold;
   color: #000000;
 }
 
 .stat-lbl {
-  font-size: 24px;
+  font-size: 6px;
   color: #999999;
-  margin-top: 5px;
+  margin-top: 1px;
 }
 
 .stat-divider {
-  width: 2px;
-  height: 60px;
+  width: 0px;
+  height: 14px;
   background-color: #dddddd;
 }
 
@@ -709,100 +700,100 @@ export default {
 .week-day {
   width: 13%; /* Approx 100/7 */
   text-align: center;
-  font-size: 28px;
+  font-size: 6px;
   color: #999999;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .day-cell-wrapper {
   width: 13%;
-  height: 100px;
+  height: 23px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .day-cell-today {
   width: 13%;
-  height: 100px;
-  background-color: #E6E6FA;
-  border-radius: 15px;
+  height: 23px;
+  background-color: #e6e6fa;
+  border-radius: 3px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .day-cell {
   width: 13%;
-  height: 80px;
+  height: 19px;
   text-align: center;
-  font-size: 32px;
+  font-size: 7px;
   color: #666666;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .day-text {
-  font-size: 32px;
+  font-size: 7px;
   color: #666666;
 }
 
 .today-text {
-  font-size: 32px;
-  color: #8A6DFF;
+  font-size: 7px;
+  color: #8a6dff;
   font-weight: bold;
 }
 
 .day-cell-selected {
   width: 13%;
-  height: 100px;
-  background-color: #E6E6FA;
-  border-radius: 15px;
+  height: 23px;
+  background-color: #e6e6fa;
+  border-radius: 3px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .day-cell-checked {
   width: 13%;
-  height: 100px;
-  background-color: #F5F0FF;
-  border-radius: 15px;
+  height: 23px;
+  background-color: #f5f0ff;
+  border-radius: 3px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .checked-day-text {
-  color: #8A6DFF;
-  font-size: 32px;
+  color: #8a6dff;
+  font-size: 7px;
 }
 
 .selected-day-text {
-  color: #8A6DFF;
-  font-size: 32px;
+  color: #8a6dff;
+  font-size: 7px;
   font-weight: bold;
 }
 
 .checkin-data-text {
-  font-size: 18px;
-  color: #8A6DFF;
-  margin-bottom: 2px;
+  font-size: 4px;
+  color: #8a6dff;
+  margin-bottom: 0px;
 }
 
 .water-text {
-  font-size: 20px;
-  color: #8A6DFF;
-  margin-bottom: 2px;
+  font-size: 5px;
+  color: #8a6dff;
+  margin-bottom: 0px;
 }
 
 .dot-text {
-  font-size: 16px;
-  color: #8A6DFF;
-  margin-top: 2px;
+  font-size: 4px;
+  color: #8a6dff;
+  margin-top: 0px;
 }
 
 /* Dialog Styles */
@@ -828,37 +819,37 @@ export default {
 }
 
 .dialog-box {
-  width: 930px;
+  width: 215px;
   background-color: #ffffff;
-  border-radius: 40px;
-  padding: 50px;
+  border-radius: 9px;
+  padding: 12px;
   flex-direction: column;
   align-items: center;
 }
 
 .dialog-title {
-  font-size: 42px;
+  font-size: 10px;
   font-weight: bold;
   color: #000000;
-  margin-bottom: 50px;
+  margin-bottom: 12px;
 }
 
 .dialog-label {
   width: 100%;
-  font-size: 32px;
+  font-size: 7px;
   color: #333333;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-align: left;
 }
 
 .dialog-input {
   width: 100%;
-  height: 100px;
-  background-color: #F8F8F8;
-  border-radius: 20px;
-  padding: 0 30px;
-  font-size: 30px;
-  margin-bottom: 60px;
+  height: 23px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  padding: 0 7px;
+  font-size: 7px;
+  margin-bottom: 14px;
 }
 
 .dialog-btns {
@@ -868,10 +859,10 @@ export default {
 }
 
 .dialog-btn-cancel {
-  width: 380px;
-  height: 100px;
-  border: 2px solid #8A6DFF;
-  border-radius: 50px;
+  width: 88px;
+  height: 23px;
+  border: 0px solid #8a6dff;
+  border-radius: 12px;
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
@@ -879,21 +870,21 @@ export default {
 
 .btn-cancel-text {
   color: #666666;
-  font-size: 36px;
+  font-size: 8px;
 }
 
 .dialog-btn-confirm {
-  width: 380px;
-  height: 100px;
-  background-color: #8A6DFF;
-  border-radius: 50px;
+  width: 88px;
+  height: 23px;
+  background-color: #8a6dff;
+  border-radius: 12px;
   justify-content: center;
   align-items: center;
 }
 
 .btn-confirm-text {
   color: #ffffff;
-  font-size: 36px;
+  font-size: 8px;
   font-weight: bold;
 }
 </style>

@@ -2,16 +2,16 @@
   <div class="steps-container">
     <!-- 顶部区域 -->
     <div class="top-section">
-      <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
+      <image class="top-bg" src="/pkg_main/assets/img/top-bg.png"></image>
 
       <!-- 顶部日期和标题 -->
       <div class="header-info">
-        <image class="app-logo" src="/assets/img/logo-1.png"></image>
+        <image class="app-logo" src="/pkg_main/assets/img/logo-1.png"></image>
         <text class="date-text">{{ currentDate }}</text>
       </div>
 
       <!-- 卡通人物 -->
-      <image class="character-img" src="/assets/img/ip.png"></image>
+      <image class="character-img" src="/pkg_main/assets/img/ip.png"></image>
 
       <!-- 今日数据概览 -->
       <div class="today-stats-card">
@@ -42,7 +42,7 @@
         <text class="target-value-text">{{
           targetSteps > 0 ? targetSteps : '未设置'
         }}</text>
-        <image class="setting-icon" src="/assets/img/chilun.png"></image>
+        <image class="setting-icon" src="/pkg_main/assets/img/gear.png"></image>
       </div>
     </div>
 
@@ -70,7 +70,7 @@
         <div class="icon-wrapper">
           <image
             class="data-icon"
-            src="/assets/img/leijiyundongbushu.png"
+            src="/pkg_main/assets/img/total-steps.png"
           ></image>
         </div>
         <div class="data-info">
@@ -82,7 +82,7 @@
       <!-- 累计时长 -->
       <div class="data-card">
         <div class="icon-wrapper">
-          <image class="data-icon" src="/assets/img/shijian.png"></image>
+          <image class="data-icon" src="/pkg_main/assets/img/time.png"></image>
         </div>
         <div class="data-info">
           <text class="data-num">{{ totalDuration }}</text>
@@ -93,7 +93,10 @@
       <!-- 累计消耗 -->
       <div class="data-card">
         <div class="icon-wrapper">
-          <image class="data-icon" src="/assets/img/shijian-1.png"></image>
+          <image
+            class="data-icon"
+            src="/pkg_main/assets/img/time-1.png"
+          ></image>
         </div>
         <div class="data-info">
           <text class="data-num">{{ totalCalories }}</text>
@@ -104,7 +107,10 @@
       <!-- 累计次数 -->
       <div class="data-card">
         <div class="icon-wrapper">
-          <image class="data-icon" src="/assets/img/shijian-2.png"></image>
+          <image
+            class="data-icon"
+            src="/pkg_main/assets/img/time-2.png"
+          ></image>
         </div>
         <div class="data-info">
           <text class="data-num">{{ totalCount }}</text>
@@ -365,13 +371,13 @@ export default {
 .steps-container {
   flex-direction: column;
   background-color: #f5f7fa;
-  padding-bottom: 50px;
+  padding-bottom: 12px;
 }
 
 /* 顶部区域 */
 .top-section {
   width: 100%;
-  height: 950px;
+  height: 220px;
   position: relative;
   flex-direction: column;
   align-items: center;
@@ -388,7 +394,7 @@ export default {
 
 .header-info {
   width: 100%;
-  padding: 30px 20px 30px 40px;
+  padding: 7px 5px 7px 9px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -396,36 +402,36 @@ export default {
 }
 
 .app-logo {
-  width: 300px;
-  height: 60px;
+  width: 69px;
+  height: 14px;
   object-fit: contain;
-  margin-left: -20px;
+  margin-left: -5px;
 }
 
 .date-text {
-  font-size: 36px;
+  font-size: 8px;
   font-weight: bold;
   color: #000000;
 }
 
 .character-img {
-  width: 800px;
-  height: 800px;
+  width: 185px;
+  height: 185px;
   object-fit: contain;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .today-stats-card {
   width: 92%;
-  height: 200px;
+  height: 46px;
   background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 30px;
-  padding: 40px 20px;
+  border-radius: 7px;
+  padding: 9px 5px;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   position: absolute;
-  bottom: 10px;
+  bottom: 2px;
   left: 4%;
 }
 
@@ -436,45 +442,45 @@ export default {
 }
 
 .stat-label {
-  font-size: 26px;
+  font-size: 6px;
   color: #666666;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .stat-value {
-  font-size: 48px;
+  font-size: 11px;
   color: #000000;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
 }
 
 .stat-unit {
-  font-size: 24px;
+  font-size: 6px;
   color: #999999;
 }
 
 .stat-divider {
-  width: 2px;
-  height: 60px;
+  width: 0px;
+  height: 14px;
   background-color: #eeeeee;
 }
 
 /* 目标设置 */
 .target-card {
   width: 92%;
-  height: 120px;
+  height: 28px;
   background-color: #ffffff;
-  border-radius: 30px;
-  margin-top: 30px;
+  border-radius: 7px;
+  margin-top: 7px;
   margin-left: 4%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
+  padding: 0 9px;
 }
 
 .target-label {
-  font-size: 32px;
+  font-size: 7px;
   color: #333333;
   font-weight: bold;
 }
@@ -485,24 +491,24 @@ export default {
 }
 
 .target-value-text {
-  font-size: 42px;
+  font-size: 10px;
   font-weight: bold;
   color: #333333;
-  margin-right: 20px;
+  margin-right: 5px;
 }
 
 .setting-icon {
-  width: 60px;
-  height: 60px;
+  width: 14px;
+  height: 14px;
 }
 
 /* 添加按钮 */
 .add-btn {
   width: 92%;
-  height: 100px;
+  height: 23px;
   background-color: #8a6dff;
-  border-radius: 50px;
-  margin-top: 30px;
+  border-radius: 12px;
+  margin-top: 7px;
   margin-left: 4%;
   justify-content: center;
   align-items: center;
@@ -510,14 +516,14 @@ export default {
 
 .add-btn-text {
   color: #ffffff;
-  font-size: 36px;
+  font-size: 8px;
   font-weight: bold;
 }
 
 /* 双按钮容器 */
 .dual-btn-container {
   width: 92%;
-  margin-top: 30px;
+  margin-top: 7px;
   margin-left: 4%;
   flex-direction: row;
   justify-content: space-between;
@@ -525,43 +531,43 @@ export default {
 
 .delete-btn {
   width: 48%;
-  height: 100px;
+  height: 23px;
   background-color: #ffffff;
-  border-radius: 50px;
-  border: 2px solid #8a6dff;
+  border-radius: 12px;
+  border: 0px solid #8a6dff;
   justify-content: center;
   align-items: center;
 }
 
 .delete-btn-text {
   color: #8a6dff;
-  font-size: 32px;
+  font-size: 7px;
   font-weight: bold;
 }
 
 .continue-btn {
   width: 48%;
-  height: 100px;
+  height: 23px;
   background-color: #8a6dff;
-  border-radius: 50px;
+  border-radius: 12px;
   justify-content: center;
   align-items: center;
 }
 
 .continue-btn-text {
   color: #ffffff;
-  font-size: 32px;
+  font-size: 7px;
   font-weight: bold;
 }
 
 /* 累计数据 */
 .section-title {
-  font-size: 32px;
+  font-size: 7px;
   color: #333333;
   font-weight: bold;
-  margin-top: 40px;
+  margin-top: 9px;
   margin-left: 4%;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .cumulative-list {
@@ -572,28 +578,28 @@ export default {
 
 .data-card {
   width: 100%;
-  height: 160px;
+  height: 37px;
   background-color: #ffffff;
-  border-radius: 30px;
-  margin-bottom: 20px;
+  border-radius: 7px;
+  margin-bottom: 5px;
   flex-direction: row;
   align-items: center;
-  padding: 0 40px;
+  padding: 0 9px;
 }
 
 .icon-wrapper {
-  width: 130px;
-  height: 130px;
+  width: 30px;
+  height: 30px;
   background-color: #f5f7fa;
-  border-radius: 65px;
+  border-radius: 15px;
   justify-content: center;
   align-items: center;
-  margin-right: 30px;
+  margin-right: 7px;
 }
 
 .data-icon {
-  width: 95px;
-  height: 95px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
 }
 
@@ -603,14 +609,14 @@ export default {
 }
 
 .data-num {
-  font-size: 40px;
+  font-size: 9px;
   color: #000000;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
 }
 
 .data-desc {
-  font-size: 26px;
+  font-size: 6px;
   color: #999999;
 }
 
@@ -627,56 +633,56 @@ export default {
 }
 
 .modal-content {
-  width: 650px;
+  width: 150px;
   background-color: #ffffff;
-  border-radius: 40px;
-  padding: 50px;
+  border-radius: 9px;
+  padding: 12px;
   flex-direction: column;
   align-items: center;
 }
 
 .modal-title {
-  font-size: 40px;
+  font-size: 9px;
   font-weight: bold;
   color: #000000;
-  margin-bottom: 50px;
+  margin-bottom: 12px;
 }
 
 .input-label {
   width: 100%;
-  font-size: 30px;
+  font-size: 7px;
   color: #333333;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-align: left;
 }
 
 .modal-input {
   width: 100%;
-  height: 100px;
+  height: 23px;
   background-color: #f8f9fa;
-  border-radius: 20px;
-  padding: 0 30px;
-  font-size: 30px;
-  margin-bottom: 40px;
+  border-radius: 5px;
+  padding: 0 7px;
+  font-size: 7px;
+  margin-bottom: 9px;
 }
 
 .modal-btn-group {
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .modal-btn {
-  width: 260px;
-  height: 90px;
-  border-radius: 45px;
+  width: 60px;
+  height: 21px;
+  border-radius: 10px;
   justify-content: center;
   align-items: center;
 }
 
 .cancel-btn {
-  border: 2px solid #8a6dff;
+  border: 0px solid #8a6dff;
   background-color: #ffffff;
 }
 
@@ -685,12 +691,12 @@ export default {
 }
 
 .btn-text-gray {
-  font-size: 32px;
+  font-size: 7px;
   color: #666666;
 }
 
 .btn-text-white {
-  font-size: 32px;
+  font-size: 7px;
   color: #ffffff;
 }
 </style>

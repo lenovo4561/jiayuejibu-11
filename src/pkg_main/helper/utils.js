@@ -21,11 +21,11 @@ function showToast(message = '', duration = 0) {
   if (!message) return
   prompt.showToast({
     message: message,
-    duration,
+    duration
   })
 }
 
 export default {
   showToast,
-  queryString,
+  queryString
 }

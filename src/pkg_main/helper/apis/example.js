@@ -21,5 +21,5 @@ export default {
   },
   postOtherApi(data) {
     return $ajax.post(`${baseUrl}your-project-api`, data)
-  },
+  }
 }

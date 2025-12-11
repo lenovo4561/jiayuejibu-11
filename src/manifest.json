@@ -36,7 +36,7 @@
   "template/official": "demo-template",
   "config": {
     "logLevel": "debug",
-    "designWidth": 1080
+    "designWidth": 250
   },
   "router": {
     "entry": "pages/Splash",
@@ -44,17 +44,20 @@
       "pages/Splash": {
         "component": "index"
       },
-      "pages/Demo": {
+      "pkg_main/pages/Demo": {
         "component": "index"
       },
-      "pages/DemoDetail": {
-        "component": "index"
-      },
-      "pages/Web": {
+      "pkg_main/pages/Web": {
         "component": "index"
       }
     }
   },
+  "subpackages": [
+    {
+      "name": "pkg_main",
+      "resource": "pkg_main"
+    }
+  ],
   "display": {
     "titleBarBackgroundColor": "#f2f2f2",
     "titleBarTextColor": "#414141",
@@ -65,17 +68,14 @@
         "backgroundColor": "transparent",
         "titleBar": false
       },
-      "pages/Demo": {
+      "pkg_main/pages/Demo": {
         "titleBarText": "快应用示例模版",
         "menu": false,
         "backgroundColor": "transparent",
         "titleBar": false,
         "fullScreen": false
       },
-      "pages/DemoDetail": {
-        "titleBarText": "详情页"
-      },
-      "pages/Web": {
+      "pkg_main/pages/Web": {
         "titleBarText": "详情",
         "titleBar": false
       }

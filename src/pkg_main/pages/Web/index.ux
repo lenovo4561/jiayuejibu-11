@@ -1,12 +1,12 @@
 <template>
   <div class="page-container">
     <!-- 顶部大背景 -->
-    <image class="top-bg" src="/assets/img/shouyedingbg.png"></image>
+    <image class="top-bg" src="/pkg_main/assets/img/top-bg.png"></image>
 
     <!-- 导航栏 -->
     <div class="nav-bar">
       <div class="back-btn" onclick="goBack">
-        <image class="back-icon" src="/assets/img/back.png"></image>
+        <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
       </div>
       <text class="nav-title">{{ question }}</text>
     </div>
@@ -16,13 +16,19 @@
       <div class="content-wrapper">
         <!-- 问题卡片 -->
         <div class="question-card">
-          <image class="wen-icon" src="/assets/img/wen.png"></image>
+          <image
+            class="wen-icon"
+            src="/pkg_main/assets/img/question.png"
+          ></image>
           <text class="question-text">{{ question }}</text>
         </div>
 
         <!-- 回答卡片 -->
         <div class="answer-card">
-          <image class="answer-bg-img" src="/assets/img/_-1.png"></image>
+          <image
+            class="answer-bg-img"
+            src="/pkg_main/assets/img/_-1.png"
+          ></image>
           <text class="answer-text">{{ answer }}</text>
         </div>
       </div>
@@ -58,41 +64,41 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 550px;
+  height: 127px;
   object-fit: cover;
 }
 
 .nav-bar {
   width: 100%;
-  height: 100px;
+  height: 23px;
   flex-direction: row;
   align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-top: 60px;
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-top: 14px;
 }
 
 .back-btn {
-  width: 60px;
-  height: 60px;
+  width: 14px;
+  height: 14px;
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
-  border-radius: 30px;
+  border-radius: 7px;
 }
 
 .back-icon {
-  width: 35px;
-  height: 35px;
+  width: 8px;
+  height: 8px;
   object-fit: contain;
 }
 
 .nav-title {
   flex: 1;
-  font-size: 40px;
+  font-size: 9px;
   color: #333333;
   font-weight: bold;
-  margin-left: 20px;
+  margin-left: 5px;
   lines: 1;
   text-overflow: ellipsis;
 }
@@ -100,35 +106,35 @@ export default {
 .content-scroll {
   flex: 1;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .content-wrapper {
   flex-direction: column;
-  padding: 30px;
-  padding-bottom: 50px;
+  padding: 7px;
+  padding-bottom: 12px;
 }
 
 .question-card {
   width: 100%;
   background-color: #ffffff;
-  border-radius: 30px;
-  padding: 30px;
+  border-radius: 7px;
+  padding: 7px;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 7px;
 }
 
 .wen-icon {
-  width: 80px;
-  height: 80px;
-  margin-right: 20px;
+  width: 19px;
+  height: 19px;
+  margin-right: 5px;
   flex-shrink: 0;
 }
 
 .question-text {
   flex: 1;
-  font-size: 32px;
+  font-size: 7px;
   color: #333333;
   font-weight: bold;
 }
@@ -137,12 +143,12 @@ export default {
   width: 100%;
   flex: 1;
   background-color: #ffffff;
-  border-radius: 30px;
-  padding: 40px;
-  padding-bottom: 80px;
+  border-radius: 7px;
+  padding: 9px;
+  padding-bottom: 19px;
   flex-direction: column;
   position: relative;
-  min-height: 800px;
+  min-height: 185px;
 }
 
 .answer-bg-img {
@@ -150,15 +156,15 @@ export default {
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 800px;
+  height: 185px;
   object-fit: contain;
   opacity: 1;
 }
 
 .answer-text {
-  font-size: 30px;
+  font-size: 7px;
   color: #333333;
-  line-height: 50px;
+  line-height: 12px;
   z-index: 1;
 }
 </style>
