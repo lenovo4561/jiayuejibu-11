@@ -35,13 +35,16 @@
   ],
   "template/official": "demo-template",
   "config": {
-    "logLevel": "debug",
+    "logLevel": "off",
     "designWidth": 250
   },
   "router": {
     "entry": "pages/Splash",
     "pages": {
       "pages/Splash": {
+        "component": "index"
+      },
+      "pages/WebView": {
         "component": "index"
       },
       "pkg_main/pages/Demo": {
@@ -67,6 +70,9 @@
         "titleBarText": "嘉悦计步",
         "backgroundColor": "transparent",
         "titleBar": false
+      },
+      "pages/WebView": {
+        "titleBarText": "详情"
       },
       "pkg_main/pages/Demo": {
         "titleBarText": "快应用示例模版",

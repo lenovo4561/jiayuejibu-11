@@ -6,10 +6,10 @@
 <template>
   <div class="main-container">
     <div class="content-area">
-      <steps-page if="{{currentIndex === 0}}"></steps-page>
-      <checkin-page if="{{currentIndex === 1}}"></checkin-page>
-      <health-page if="{{currentIndex === 2}}"></health-page>
-      <mine-page if="{{currentIndex === 3}}"></mine-page>
+      <steps-page class="page-component" if="{{currentIndex === 0}}"></steps-page>
+      <checkin-page class="page-component" if="{{currentIndex === 1}}"></checkin-page>
+      <health-page class="page-component" if="{{currentIndex === 2}}"></health-page>
+      <mine-page class="page-component" if="{{currentIndex === 3}}"></mine-page>
     </div>
 
     <div class="tab-bar">
@@ -92,6 +92,11 @@ export default {
   flex: 1;
   width: 100%;
   padding-bottom: 37px;
+}
+
+.page-component {
+  width: 100%;
+  height: 100%;
 }
 
 .tab-bar {

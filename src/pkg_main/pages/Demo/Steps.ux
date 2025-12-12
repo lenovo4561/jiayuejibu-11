@@ -1,5 +1,6 @@
 <template>
-  <div class="steps-container">
+  <scroll class="steps-container">
+    <div class="content-wrapper">
     <!-- 顶部区域 -->
     <div class="top-section">
       <image class="top-bg" src="/pkg_main/assets/img/top-bg.png"></image>
@@ -118,6 +119,7 @@
         </div>
       </div>
     </div>
+    </div>
 
     <!-- 目标设置模态框 -->
     <div class="modal-mask" if="{{showTargetModal}}">
@@ -175,7 +177,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </scroll>
 </template>
 
 <script>
@@ -372,6 +374,7 @@ export default {
   flex-direction: column;
   background-color: #f5f7fa;
   padding-bottom: 12px;
+  width: 100%;
 }
 
 /* 顶部区域 */
@@ -562,18 +565,19 @@ export default {
 
 /* 累计数据 */
 .section-title {
+  width: 92%;
   font-size: 7px;
   color: #333333;
   font-weight: bold;
   margin-top: 9px;
-  margin-left: 4%;
   margin-bottom: 5px;
+  margin-left: 4%;
 }
 
 .cumulative-list {
   width: 92%;
-  margin-left: 4%;
   flex-direction: column;
+  margin-left: 4%;
 }
 
 .data-card {
@@ -698,5 +702,11 @@ export default {
 .btn-text-white {
   font-size: 7px;
   color: #ffffff;
+}
+
+.content-wrapper {
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 }
 </style>

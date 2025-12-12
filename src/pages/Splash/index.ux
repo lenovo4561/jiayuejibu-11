@@ -16,10 +16,8 @@ import router from '@system.router'
 import storage from '@system.storage'
 
 export default {
-  data() {
-    return {
-      showPrivacy: false
-    }
+  private: {
+    showPrivacy: false
   },
   onInit() {
     // 检查是否已同意协议
@@ -27,10 +25,8 @@ export default {
       key: 'agreed_privacy',
       success: data => {
         if (data === 'true') {
-          // 已同意，缩短延迟避免闪烁
-          setTimeout(() => {
-            this.goHome()
-          }, 800)
+          // 已同意，直接进入首页
+          this.goHome()
         } else {
           // 未同意，显示模态框
           this.showPrivacy = true

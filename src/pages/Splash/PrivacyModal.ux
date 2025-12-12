@@ -49,20 +49,18 @@ export default {
   },
   openAgreement() {
     router.push({
-      uri: '/pkg_main/pages/Web',
+      uri: '/pages/WebView',
       params: {
-        url:
-          'https://api.51dsp.cn/index/agreement.do?pn=com.jiayuejbjs.jyjsdelight',
+        url: 'https://api.51dsp.cn/index/agreement.do?pn=com.jiayuejbjs.jyjsdelight',
         title: '用户协议'
       }
     })
   },
   openPrivacy() {
     router.push({
-      uri: '/pkg_main/pages/Web',
+      uri: '/pages/WebView',
       params: {
-        url:
-          'https://api.51dsp.cn/index/privacy.do?pn=com.jiayuejbjs.jyjsdelight',
+        url: 'https://api.51dsp.cn/index/privacy.do?pn=com.jiayuejbjs.jyjsdelight',
         title: '隐私政策'
       }
     })

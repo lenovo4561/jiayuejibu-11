@@ -1,42 +1,44 @@
 <template>
   <div class="mine-container">
-    <!-- 顶部背景和用户信息 -->
-    <div class="top-section">
-      <image class="top-bg" src="/pkg_main/assets/img/mine-bg.png"></image>
-      <div class="user-info">
-        <image class="avatar" src="/pkg_main/assets/img/a.png"></image>
-        <text class="username">王凡玄</text>
-      </div>
-    </div>
-
-    <!-- 其他服务卡片 -->
-    <div class="services-card">
-      <text class="card-title">其他服务</text>
-
-      <!-- 用户协议 -->
-      <div class="service-item" onclick="openAgreement">
-        <div class="item-left">
-          <image
-            class="item-icon"
-            src="/pkg_main/assets/img/user-agreement.png"
-          ></image>
-          <text class="item-text">用户协议</text>
+    <div class="content-wrapper">
+      <!-- 顶部背景和用户信息 -->
+      <div class="top-section">
+        <image class="top-bg" src="/pkg_main/assets/img/mine-bg.png"></image>
+        <div class="user-info">
+          <image class="avatar" src="/pkg_main/assets/img/a.png"></image>
+          <text class="username">王凡玄</text>
         </div>
-        <image class="arrow-icon" src="/pkg_main/assets/img/right.png"></image>
       </div>
 
-      <div class="divider"></div>
+      <!-- 其他服务卡片 -->
+      <div class="services-card">
+        <text class="card-title">其他服务</text>
 
-      <!-- 隐私政策 -->
-      <div class="service-item" onclick="openPrivacy">
-        <div class="item-left">
-          <image
-            class="item-icon"
-            src="/pkg_main/assets/img/privacy-1.png"
-          ></image>
-          <text class="item-text">隐私政策</text>
+        <!-- 用户协议 -->
+        <div class="service-item" onclick="openAgreement">
+          <div class="item-left">
+            <image
+              class="item-icon"
+              src="/pkg_main/assets/img/user-agreement.png"
+            ></image>
+            <text class="item-text">用户协议</text>
+          </div>
+          <image class="arrow-icon" src="/pkg_main/assets/img/right.png"></image>
         </div>
-        <image class="arrow-icon" src="/pkg_main/assets/img/right.png"></image>
+
+        <div class="divider"></div>
+
+        <!-- 隐私政策 -->
+        <div class="service-item" onclick="openPrivacy">
+          <div class="item-left">
+            <image
+              class="item-icon"
+              src="/pkg_main/assets/img/privacy-1.png"
+            ></image>
+            <text class="item-text">隐私政策</text>
+          </div>
+          <image class="arrow-icon" src="/pkg_main/assets/img/right.png"></image>
+        </div>
       </div>
     </div>
   </div>
@@ -49,7 +51,7 @@ export default {
   data: {},
   openAgreement() {
     router.push({
-      uri: '/pkg_main/pages/Web',
+      uri: '/pages/WebView',
       params: {
         url:
           'https://api.51dsp.cn/index/agreement.do?pn=com.jiayuejbjs.jyjsdelight',
@@ -59,7 +61,7 @@ export default {
   },
   openPrivacy() {
     router.push({
-      uri: '/pkg_main/pages/Web',
+      uri: '/pages/WebView',
       params: {
         url:
           'https://api.51dsp.cn/index/privacy.do?pn=com.jiayuejbjs.jyjsdelight',
@@ -76,6 +78,12 @@ export default {
   background-color: #f5f7fa;
   width: 100%;
   height: 100%;
+}
+
+.content-wrapper {
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 }
 
 .top-section {
@@ -119,7 +127,6 @@ export default {
   width: 92%;
   background-color: #ffffff;
   border-radius: 7px;
-  margin-left: 4%;
   margin-top: -23px; /* Overlap with background */
   padding: 9px;
   flex-direction: column;

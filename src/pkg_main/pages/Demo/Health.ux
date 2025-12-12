@@ -1,6 +1,7 @@
 <template>
-  <div class="page-container">
+  <stack class="page-container">
     <image class="top-bg" src="/pkg_main/assets/img/top-bg.png"></image>
+    <div class="content-wrapper">
     <text class="page-title">走路健康</text>
 
     <list class="question-list">
@@ -19,7 +20,8 @@
         </div>
       </list-item>
     </list>
-  </div>
+    </div>
+  </stack>
 </template>
 
 <script>
@@ -48,17 +50,19 @@ export default {
 .page-container {
   width: 100%;
   height: 100%;
-  flex-direction: column;
   background-color: #f5f7fa;
+}
+
+.content-wrapper {
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
 }
 
 .top-bg {
   width: 100%;
   height: 104px;
   object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 .page-title {
